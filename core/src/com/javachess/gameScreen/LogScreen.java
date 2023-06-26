@@ -1,26 +1,43 @@
-package com.javachess.logScreen;
+package com.javachess.gameScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.javachess.action.ImpChessInputProcessor;
+import com.javachess.action.ImpLogInputProcessor;
+import pieces.Piece;
 
 public class LogScreen implements Screen {
     private SpriteBatch spriteBatch;
     private BitmapFont font;
+    private OrthographicCamera camera;
     private CharSequence logText;
     private float elapsedTime;
     private float countdownTime = 600; // Tempo total do cronômetro em segundos (10 minutos)
 
-    public LogScreen() {
+    private Piece[][]pieces;
+
+    public LogScreen(Viewport viewport) {
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+
         spriteBatch = new SpriteBatch();
         font = new BitmapFont(); // Pode personalizar a fonte conforme suas preferências
         logText = "Início do jogo de xadrez";
+
+        camera = new OrthographicCamera(screenWidth, screenHeight);
+        camera.setToOrtho(false); // FAZER DOCUMENTAÇÂO
+        viewport.setCamera(camera);
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(new ImpLogInputProcessor(camera,pieces));
         // Configurações iniciais da tela de log
     }
 
